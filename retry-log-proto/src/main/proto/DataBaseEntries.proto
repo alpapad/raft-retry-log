@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.aktarma.retrylog.server.db.proto";
+option java_outer_classname = "DatabaseEntriesProtos";
+option java_generate_equals_and_hash = true;
+package com.aktarma.retrylog.server.db.proto;
+
+
+message TransmissionTry {
+	int64 refTime = 1;
+	int32 retry = 2;
+	int64 expires = 3;
+}
+
+message DbEntry {
+	bytes networkref = 1;
+	int64 receivedTs = 2;
+	bool confirmed = 3;
+	repeated TransmissionTry tries = 4;
+}
+
+message TryToDbEntry {
+	int64 ts = 1;
+	bytes networkref = 2;
+	int32 retry = 3;
+}
+
+message ReceivedTsToDbEntry {
+	int64 receivedTs = 1;
+	bytes networkref = 2;
+}

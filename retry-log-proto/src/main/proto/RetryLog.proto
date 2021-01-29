@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.aktarma.retrylog.common.wire.proto";
+option java_outer_classname = "RetryLogProtos";
+option java_generate_equals_and_hash = true;
+package com.aktarma.retrylog.server.db.proto;
+
+message Request {
+	oneof RequestType {
+		TransmissionBeginRequest transmission_begin = 1;
+		TransmissionCommitRequest transmission_commit = 2;
+		TransmissionFailRequest transmission_fail = 3;
+		TransmissionConfirmedRequest transmission_confirmed = 4;
+		ToRetryRequest retry_req = 5;
+	}
+}
+
+message Response {
+	ExceptionResponse exception = 1;
+	oneof ResponseType {
+		TransmissionBeginResponse transmission_begin_response = 2;
+		TransmissionCommitResponse transmission_commit_response = 3;
+		TransmissionFailResponse transmission_fail_response = 4;
+		TransmissionConfirmedResponse transmission_confirmed_response = 5;
+		ToRetryResponse retry_resp = 6;
+	}
+}
+
+message TransmissionEntry {
+	bytes networkref = 1;
+	int32 retry = 2;
+}
+
+enum OperationResultCode {
+	OK = 0;
+	NOT_FOUND = 1;
+	UPDATE_ERROR = 2;
+}
+
+message TransmissionBeginRequest {
+	int64 reftime = 1;
+	bytes networkref = 2;
+	int64 beginPhaseExpires = 3; // time after which we can safely begin the request again
+	int64 expires = 4; // time after which we can safely begin the request again
+	int32 retry = 5;
+}
+
+message TransmissionBeginResponse {
+	TransmissionEntry entry = 1;
+	enum Code {
+		OK = 0;
+		INFLIGHT = 1;
+		DUPLICATE = 2;
+		NOT_FOUND = 3;
+	}
+
+	Code code = 2;
+}
+
+message TransmissionCommitRequest {
+	int64 reftime = 1;
+	bytes networkref = 2;
+	int64 expires = 3; // time after which we can safely delete all records
+	int32 retry = 4;
+}
+
+message TransmissionCommitResponse {
+	TransmissionEntry entry = 1;
+	OperationResultCode code = 2;
+}
+
+message TransmissionFailRequest {
+	int64 reftime = 1;
+	bytes networkref = 2;
+	int32 retry = 3;
+}
+
+message TransmissionFailResponse {
+	TransmissionEntry entry = 1;
+	OperationResultCode code = 2;
+}
+
+message TransmissionConfirmedRequest {
+	int64 reftime = 1;
+	bytes networkref = 2;
+}
+
+message TransmissionConfirmedResponse {
+	TransmissionEntry entry = 1;
+	OperationResultCode code = 2;
+}
+
+message TransmissionRetryEntry {
+	bytes networkref = 1;
+	int32 retry = 2;
+	int64 lastsend = 3;
+}
+
+message ToRetryRequest {
+	bytes requestor = 1;
+}
+
+message ToRetryResponse {
+	ExceptionResponse exception = 1;
+	repeated TransmissionRetryEntry entry = 2;
+}
+
+message ExceptionResponse {
+	// Class name of the exception thrown from the server
+	string exception_class_name = 1;
+	// Exception stack trace from the server side
+	string stack_trace = 2;
+	// Exception message
+	string message = 3;
+
+	// Optional hostname.  Filled in for some exceptions such as region moved
+	// where exception gives clue on where the region may have moved.
+	string hostname = 4;
+	int32 port = 5;
+	// Set if we are NOT to retry on receipt of this exception
+	bool do_not_retry = 6;
+}

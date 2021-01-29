@@ -1,0 +1,162 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.aktrama</groupId>
+		<artifactId>retry-log-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>retry-log-server</artifactId>
+
+
+	<properties>
+		<graalvm.version>20.3.0</graalvm.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.aktrama</groupId>
+			<artifactId>retry-log-proto</artifactId>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-thirdparty-misc</artifactId>
+		</dependency>
+
+
+		<!-- External dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-netty</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-grpc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-proto</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-tools</artifactId>
+		</dependency>
+
+		<dependency>
+			<artifactId>ratis-common</artifactId>
+			<groupId>org.apache.ratis</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-jvm</artifactId>
+		</dependency>
+
+		<dependency>
+			<artifactId>ratis-common</artifactId>
+			<groupId>org.apache.ratis</groupId>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
+
+
+		<dependency>
+			<artifactId>ratis-server</artifactId>
+			<groupId>org.apache.ratis</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.20</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.lmdbjava</groupId>
+			<artifactId>lmdbjava</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.rocksdb</groupId>
+			<artifactId>rocksdbjni</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.graalvm.sdk</groupId>
+			<artifactId>graal-sdk</artifactId>
+			<version>${graalvm.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- dependency> <groupId>org.hsqldb</groupId> <artifactId>hsqldb</artifactId> 
+			<version>2.5.1</version> </dependency> <dependency> <groupId>com.h2database</groupId> 
+			<artifactId>h2</artifactId> <version>1.4.200</version> </dependency -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.graalvm.nativeimage</groupId>
+				<artifactId>native-image-maven-plugin</artifactId>
+				<version>${graalvm.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>native-image</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>false</skip>
+					<imageName>retry-log-server</imageName>
+					<mainClass>com.aktarma.retrylog.server.RetrylogServer</mainClass>
+					<buildArgs>--no-fallback</buildArgs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

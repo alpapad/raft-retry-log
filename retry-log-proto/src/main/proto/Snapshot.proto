@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.aktarma.retrylog.common.journal.proto";
+option java_outer_classname = "RaftJournalProto";
+option java_generate_equals_and_hash = true;
+package com.aktarma.retrylog.common.journal.proto;
+
+
+
+//import "grpc/common.proto";
+
+message JournalQueryRequest {
+  GetSnapshotInfoRequest snapshotInfoRequest = 1;
+  GetSnapshotRequest snapshotRequest = 2;
+}
+
+message JournalQueryResponse {
+  GetSnapshotInfoResponse snapshotInfoResponse = 1;
+}
+
+
+message GetSnapshotInfoRequest {
+}
+
+message GetSnapshotInfoResponse {
+  SnapshotMetadata latest = 1;
+}
+
+message GetSnapshotRequest {
+}
+
+message SnapshotMetadata {
+  int64 snapshotTerm = 1;
+  int64 snapshotIndex = 2;
+}
+
+message SnapshotData {
+  int64 snapshotTerm = 1;
+  int64 snapshotIndex = 2;
+  bytes chunk = 3;
+  int64 offset = 4;
+  bool eof = 5;
+}
+
+message UploadSnapshotPRequest {
+  SnapshotData data = 1;
+}
+
+message UploadSnapshotPResponse {
+  int64 offsetReceived = 1;
+}
+
+message DownloadSnapshotPRequest {
+  int64 offsetReceived = 1;
+}
+
+message DownloadSnapshotPResponse {
+  SnapshotData data = 1;
+}
+
+/**
+  * This interface contains raft service endpoints for Alluxio masters.
+  */
+service RaftJournalService {
+
+  /**
+   * Uploads a snapshot to primary master.
+   */
+  rpc UploadSnapshot (stream UploadSnapshotPRequest) returns (stream UploadSnapshotPResponse);
+
+  /**
+   * Downloads a snapshot from primary master.
+   */
+  rpc DownloadSnapshot (stream DownloadSnapshotPRequest) returns (stream DownloadSnapshotPResponse);
+}

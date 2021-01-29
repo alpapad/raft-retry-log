@@ -1,0 +1,101 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.aktrama</groupId>
+		<artifactId>retry-log-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>retry-log-client</artifactId>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.aktrama</groupId>
+			<artifactId>retry-log-proto</artifactId>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-thirdparty-misc</artifactId>
+		</dependency>
+
+
+		<!-- External dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-netty</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-grpc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-proto</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ratis</groupId>
+			<artifactId>ratis-tools</artifactId>
+		</dependency>
+
+		<dependency>
+			<artifactId>ratis-common</artifactId>
+			<groupId>org.apache.ratis</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<artifactId>ratis-client</artifactId>
+			<groupId>org.apache.ratis</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+
+
+
+		<dependency>
+			<artifactId>ratis-common</artifactId>
+			<groupId>org.apache.ratis</groupId>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+	</dependencies>
+</project>
